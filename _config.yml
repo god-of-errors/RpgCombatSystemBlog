@@ -1,7 +1,4 @@
 theme: jekyll-theme-cayman
-collections:
-  ilos:
-    output: true
 title: "RPG system Blog Post"
 description: Some description 
 student:
