@@ -22,10 +22,74 @@ Originally, the template relied on ImGui UI dependency, but I later undertook th
 4. WinBattle/LoseBattle: Left virtual to accommodate specific actions triggered upon victory or defeat, such as prompts for leveling up or game over screens.
 5. Reset: Straightforwardly resets the template, preparing it for another engaging battle.
 
-Provide a high-level overview of your RPG combat system template. Explain its main features and how it enhances the gaming experience.
+This template's flexibility extends further through the incorporation of virtual functions, allowing users to modify critical aspects effortlessly. These include altering win and lose conditions, opening avenues for diverse combat encounters—from defending a single party member to time-sensitive scenarios where players must defeat enemies before impending disaster strikes. The Enemy AI, a pivotal aspect, remains customizable, accommodating distinct decision-making paradigms, ranging from random attacks to intricate strategic planning.
 
-### Custom Enum Types
-Discuss the Custom Enum Types used in your system. Explain how they contribute to the flexibility and customization of the combat system. Give examples of how these enums are utilized within the template.
+Users can also dictate the events at the start of each turn or round, introducing narrative elements or dynamic mechanics like weather-induced damage. The template's adaptability not only makes it a robust foundation for turn-based RPGs but also empowers creators to infuse their unique storytelling and gameplay mechanics seamlessly. With its modular structure, this system beckons game developers to embark on creative journeys, shaping their distinct worlds within the realm of RPG excellence.
+
+## Custom Enum Types
+The journey towards a customizable RPG combat system wouldn't be complete without addressing the inherent rigidity of traditional enums. The need for flexibility arose prominently when dealing with dynamic elements like skill types, item types, and elemental attributes, where predefined enums struggled to adapt to future additions by users. The solution? Enter the realm of adaptability with a custom Enum class designed to evolve and expand based on user-defined requirements.
+
+### Implementation
+The crux of this innovation lies in the creation of a versatile CustomEnumTypes class. Here's a glimpse into how it is implemented within the RPG Combat System Template:
+
+```C++
+rpg::CustomEnumTypes statTypes;
+
+statTypes.Create("CurrentHp");
+statTypes.Create("CurrentMp");
+statTypes.Create("MaxHp");
+statTypes.Create("MaxMp");
+statTypes.Create("Attack");
+statTypes.Create("Defense");
+statTypes.Create("Speed");
+statTypes.Create("Evasion");
+
+SetNewCustomTypes("statType", statTypes);
+```
+The CustomEnumTypes class allows for the dynamic addition of new types at runtime, paving the way for a more adaptable system. Each time a new type is introduced, it receives a unique ID and is seamlessly integrated into the existing framework.
+
+### Utilization
+This newfound flexibility proves invaluable when comparing IDs, as demonstrated in the RPG Combat System Template:
+
+```c++
+if (chainedEchoes.GetBattleStateID() == chainedEchoesBattleState.GetId("Win"))
+{
+    ImGui::Begin("Battle Dialogue HUD");
+    ImGui::Text("You won!");
+    ImGui::End();
+
+    chainedEchoes.WinBattle();
+}
+else if (chainedEchoes.GetBattleStateID() == chainedEchoesBattleState.GetId("Lose"))
+{
+    ImGui::Begin("Battle Dialogue HUD");
+    ImGui::Text("You Lost!");
+    ImGui::End();
+
+    chainedEchoes.LoseBattle();
+}
+```
+
+This seamless integration of custom enum types enhances the template's responsiveness to diverse scenarios, making it a versatile tool for developers seeking unique outcomes based on different battle states.
+
+### Application in a Pokemon Combat System
+Extending the template's functionality, the custom enum types become instrumental in defining new types for a Pokemon-inspired combat system:
+
+```c++
+AddNewType("statType","SpecialAttack");
+AddNewType("statType","SpecialDefense");
+
+AddNewType("elementType","Dragon");
+AddNewType("elementType","Electric");
+AddNewType("elementType","Psychic");
+// ... and more
+
+AddNewType("itemType","PokeBall");
+```
+
+This flexibility empowers users to define their own types tailored to specific gaming experiences, whether it be introducing new stat attributes, elemental affinities, or unique item categories within the RPG framework.
+
+In essence, the Custom Enum Types serve as the dynamic backbone of the RPG Combat System Template, breaking free from the constraints of static enums and fostering a creative environment for developers to shape their virtual worlds with unprecedented freedom.
 
 ## BaseUnit
 Purpose
