@@ -16,11 +16,11 @@ The RPG Combat System Template I built is designed to function seamlessly as par
 
 Originally, the template relied on ImGui UI dependency, but I later undertook the task of decoupling it to ensure adaptability to any UI framework. This strategic separation allows the project to evolve dynamically, triggered only when one of the six essential functions is called upon:
 
-1. StartBattle: Initiates the battle.
-2. PlayerTurn: Enables the player to decide their actions, choosing between skills or items.
-3. EnemyTurn: Mirrors the player's turn but for enemies, allowing them to make decisions.
-4. WinBattle/LoseBattle: Left virtual to accommodate specific actions triggered upon victory or defeat, such as prompts for leveling up or game over screens.
-5. Reset: Straightforwardly resets the template, preparing it for another engaging battle.
+1. **StartBattle**: Initiates the battle.
+2. **PlayerTurn**: Enables the player to decide their actions, choosing between skills or items.
+3. **EnemyTurn**: Mirrors the player's turn but for enemies, allowing them to make decisions.
+4. **WinBattle/LoseBattle**: Left virtual to accommodate specific actions triggered upon victory or defeat, such as prompts for leveling up or game over screens.
+5. **Reset**: Straightforwardly resets the template, preparing it for another engaging battle.
 
 This template's flexibility extends further through the incorporation of virtual functions, allowing users to modify critical aspects effortlessly. These include altering win and lose conditions, opening avenues for diverse combat encounters—from defending a single party member to time-sensitive scenarios where players must defeat enemies before impending disaster strikes. The Enemy AI, a pivotal aspect, remains customizable, accommodating distinct decision-making paradigms, ranging from random attacks to intricate strategic planning.
 
@@ -92,11 +92,29 @@ This flexibility empowers users to define their own types tailored to specific g
 In essence, the Custom Enum Types serve as the dynamic backbone of the RPG Combat System Template, breaking free from the constraints of static enums and fostering a creative environment for developers to shape their virtual worlds with unprecedented freedom.
 
 ## BaseUnit
-Purpose
-Introduce the BaseUnit class and its role in your RPG combat system. Explain how it represents characters or entities within the game.
+The significance of the BaseUnit class within the RPG Combat System Template cannot be overstated. Serving as a fundamental component, it encapsulates the essence of every RPG unit, ensuring the vitality of the entire battle system. At its core, the BaseUnit class encompasses key attributes that form the backbone of any RPG character: a name, level stats, equipment, skills, an elemental attribute, and the capacity to be influenced by buffs and debuffs.
 
-Attributes and Methods
-Detail the essential attributes and methods that the BaseUnit class includes. Discuss how these elements contribute to the overall functionality of the combat system.
+Upon creation, the BaseUnit class automatically defines and initializes stats and skills. However, the flexibility is paramount, allowing users to set and modify stats as needed. This adaptability is crucial for tailoring units to specific gameplay requirements.
+
+### Skills Management
+One notable feature of the BaseUnit class is its robust skills management system. Skills can be added, retrieved, and removed dynamically, providing a dynamic skillset for each unit. The implementation of this system involves careful consideration to ensure that skills added to the unit are instances of classes inherited from BaseSkill. Here's a snippet of template code showcasing the AddSkill and GetSkill functions:
+
+```c++
+template<typename T, std::enable_if_t<std::is_base_of_v<BaseSkill, T>, bool> = true>
+auto AddSkill(const T& skillToBeAdded)
+{
+    SkillList.emplace_back(new T(skillToBeAdded));
+}
+
+template<typename T, std::enable_if_t<std::is_base_of_v<BaseSkill, T>, bool> = true>
+T* GetSkill(const size_t index)
+{
+    return dynamic_cast<T*>(SkillList[index]);
+}
+```
+These functions not only facilitate the addition of skills to a unit but also ensure that the skills retrieved are specific to their inherited types. This safeguards against potential complications arising from using base skills, which may lack the additional features introduced in their inherited counterparts.
+
+In essence, the BaseUnit class encapsulates the quintessential elements of an RPG unit while providing a dynamic platform for users to tailor characters to their unique gaming narratives. Its role as a foundational building block ensures the vitality and adaptability of the entire RPG Combat System Template.
 
 ## BaseSkill
 Functionality
