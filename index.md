@@ -6,31 +6,28 @@ title: "RPG system Blog Post"
 # RPG System Blog Post
 
 ## Introductiom
-As an avid enthusiast of the RPG genre, my passion has been ignited by titles like Xenoblade Chronicles, Dragon Quest 11, Chained Echoes, Bravely Default, and Sea of Stars. The allure of immersive worlds, captivating stories, and strategic turn-based combat has always fascinated me. So, it was only a matter of time before the urge to create something within this realm took over.
+As an avid enthusiast of the RPG genre and its diverse sub-genres, ranging from the expansive worlds of Xenoblade Chronicles and Dragon Quest 11 to the captivating narratives of Chained Echoes, and Sea of Stars, my passion for RPG games has always been at the forefront. It was only natural that I harbored a deep-seated desire to contribute to this genre that has consistently fueled my imagination.
 
-In this journey, I embarked on the ambitious task of crafting a customizable turn-based RPG battle system template—a foundation upon which others could build their own epic adventures. Over the course of the next six weeks, I delved into the intricate details, fueled by a desire to encapsulate the essence of what makes RPGs so enthralling. Join me on this creative odyssey as I unveil the intricacies of the system, from its inception to the intricacies of its core components.
+In pursuit of this aspiration, I embarked on a journey to create a customizable turn-based RPG battle system template. This endeavor aimed not only to fulfill my personal creative drive but also to provide a framework that fellow enthusiasts and developers could use bring their visions to life. The follwing six weeks were dedicated to crafting and refining this RPG system template.
 
-## RPG Combat System Template
+## RPG Battle System Template
 ### Overview
-The RPG Combat System Template I built is designed to function seamlessly as part of an Entity Component System (ECS). It serves as the bedrock for turn-based mechanics, defining critical elements such as the turn order based on a unit's speed and the logic for choosing the order of units in battle. Central to its functionality is the ability to set battle data, crucial for initiating encounters with units on both sides. After all, a battle system is only as robust as the adversaries it pits against each other.
+The RPG battle system template, I developed is designed to integrate into an ECS (Entity Component System). This system defines the turn-based mechanics, with a particular focus on turn order which is determined by a unit's speed. It also handles selecting the order of units and identifying the current unit currently in play.
 
-Originally, the template relied on ImGui UI dependency, but I later undertook the task of decoupling it to ensure adaptability to any UI framework. This strategic separation allows the project to evolve dynamically, triggered only when one of the six essential functions is called upon:
+The template is adaptable and allows users to define battle data, ensuring the presence of units on both sides, which is an indispensable pre-requisite for any functional battle system, after all, a battle system comes to life only when at both sides are present. Although it was initially built with ImGui UI dependency, the template has been separated form it to ensure adaptability to any UI provided.
 
-1. **StartBattle**: Initiates the battle.
-2. **PlayerTurn**: Enables the player to decide their actions, choosing between skills or items.
-3. **EnemyTurn**: Mirrors the player's turn but for enemies, allowing them to make decisions.
-4. **WinBattle/LoseBattle**: Left virtual to accommodate specific actions triggered upon victory or defeat, such as prompts for leveling up or game over screens.
-5. **Reset**: Straightforwardly resets the template, preparing it for another engaging battle.
+The progression within the battle system is triggered by calling one of the six essential functions:
 
-This template's flexibility extends further through the incorporation of virtual functions, allowing users to modify critical aspects effortlessly. These include altering win and lose conditions, opening avenues for diverse combat encounters—from defending a single party member to time-sensitive scenarios where players must defeat enemies before impending disaster strikes. The Enemy AI, a pivotal aspect, remains customizable, accommodating distinct decision-making paradigms, ranging from random attacks to intricate strategic planning.
-
-Users can also dictate the events at the start of each turn or round, introducing narrative elements or dynamic mechanics like weather-induced damage. The template's adaptability not only makes it a robust foundation for turn-based RPGs but also empowers creators to infuse their unique storytelling and gameplay mechanics seamlessly. With its modular structure, this system beckons game developers to embark on creative journeys, shaping their distinct worlds within the realm of RPG excellence.
+1. **Start Battle**: Initiates the battle and sets the stage for the upcoming fight.
+2. **Player Turn**: Allows the user to choose what the current Unit will do, whether it be using a skill or utilizing an item.
+3. **Enemy Turn**: This function allows enemies to make any strategic decisions during their turn.
+4. **WinBattle/LoseBattle**: These virtual functions happen at end of a battle, enabling customization for events such as leveling up prompts or displaying a game-over screen.
+5. **Reset**: A straight-forward function that resets the template, making it ready for another battle.
 
 ## Custom Enum Types
-The journey towards a customizable RPG combat system wouldn't be complete without addressing the inherent rigidity of traditional enums. The need for flexibility arose prominently when dealing with dynamic elements like skill types, item types, and elemental attributes, where predefined enums struggled to adapt to future additions by users. The solution? Enter the realm of adaptability with a custom Enum class designed to evolve and expand based on user-defined requirements.
+To address the challenge of static and inflexible enums when creating types such as skill types, item types, and element types, I introduced a dynamic solution: Custom Enum Types. This custom class facilitates flexibility by allowing users to add types after initial definition. The process is simple, with each new type creation generating a unique ID, stored in a std::unordered_map, and subsequently used to retrieve the type's ID.
 
-### Implementation
-The crux of this innovation lies in the creation of a versatile CustomEnumTypes class. Here's a glimpse into how it is implemented within the RPG Combat System Template:
+Here's an example of how the statTypes enum was created in the template:
 
 ```c++
 rpg::CustomEnumTypes statTypes;
@@ -46,10 +43,7 @@ statTypes.Create("Evasion");
 
 SetNewCustomTypes("statType", statTypes);
 ```
-The CustomEnumTypes class allows for the dynamic addition of new types at runtime, paving the way for a more adaptable system. Each time a new type is introduced, it receives a unique ID and is seamlessly integrated into the existing framework.
-
-### Utilization
-This newfound flexibility proves invaluable when comparing IDs, as demonstrated in the RPG Combat System Template:
+This dynamic approach extends to comparing IDs, as demonstrated in the battle state identification example:
 
 ```c++
 if (chainedEchoes.GetBattleStateID() == chainedEchoesBattleState.GetId("Win"))
@@ -70,10 +64,7 @@ else if (chainedEchoes.GetBattleStateID() == chainedEchoesBattleState.GetId("Los
 }
 ```
 
-This seamless integration of custom enum types enhances the template's responsiveness to diverse scenarios, making it a versatile tool for developers seeking unique outcomes based on different battle states.
-
-### Application in a Pokemon Combat System
-Extending the template's functionality, the custom enum types become instrumental in defining new types for a Pokemon-inspired combat system:
+Additionally, this dynamic flexibility is showcased in defining new types for a Pokémon combat system based on this template:
 
 ```c++
 AddNewType("statType","SpecialAttack");
@@ -87,17 +78,14 @@ AddNewType("elementType","Psychic");
 AddNewType("itemType","PokeBall");
 ```
 
-This flexibility empowers users to define their own types tailored to specific gaming experiences, whether it be introducing new stat attributes, elemental affinities, or unique item categories within the RPG framework.
-
-In essence, the Custom Enum Types serve as the dynamic backbone of the RPG Combat System Template, breaking free from the constraints of static enums and fostering a creative environment for developers to shape their virtual worlds with unprecedented freedom.
+This adaptable Custom Enum Types approach ensures that my template remains open-ended, allowing users to expand and change the system to their specific needs.
 
 ## BaseUnit
-The significance of the BaseUnit class within the RPG Combat System Template cannot be overstated. Serving as a fundamental component, it encapsulates the essence of every RPG unit, ensuring the vitality of the entire battle system. At its core, the BaseUnit class encompasses key attributes that form the backbone of any RPG character: a name, level stats, equipment, skills, an elemental attribute, and the capacity to be influenced by buffs and debuffs.
+The BaseUnit class stands as another core component of my template, addressing the essential need for units within the RPG system. The concept behind this class is to encapsulate the fundamental elements that every RPG unit requires, those being a name, level stats, equipment, skills, an elemental attribute, and the ability to have buffs/debuffs applied.
 
-Upon creation, the BaseUnit class automatically defines and initializes stats and skills. However, the flexibility is paramount, allowing users to set and modify stats as needed. This adaptability is crucial for tailoring units to specific gameplay requirements.
+Stats and skills are predefined upon unit creation, offering the flexibility for users to set and modify these attributes as needed. The AddSkill and GetSkill functions have been improved with template code to ensure that the skills being added to the unit's skill list are inherited from BaseSkill. This not only streamlines the skill addition process but also provides user assistance when retrieving a skill, ensuring that the returned skill is of the inherited type rather than the base one, including new additions, if any.
 
-### Skills Management
-One notable feature of the BaseUnit class is its robust skills management system. Skills can be added, retrieved, and removed dynamically, providing a dynamic skillset for each unit. The implementation of this system involves careful consideration to ensure that skills added to the unit are instances of classes inherited from BaseSkill. Here's a snippet of template code showcasing the AddSkill and GetSkill functions:
+Here's an snippet of code showcasing the AddSkill and GetSkill functions:
 
 ```c++
 template<typename T, std::enable_if_t<std::is_base_of_v<BaseSkill, T>, bool> = true>
@@ -112,16 +100,14 @@ T* GetSkill(const size_t index)
     return dynamic_cast<T*>(SkillList[index]);
 }
 ```
-These functions not only facilitate the addition of skills to a unit but also ensure that the skills retrieved are specific to their inherited types. This safeguards against potential complications arising from using base skills, which may lack the additional features introduced in their inherited counterparts.
-
-In essence, the BaseUnit class encapsulates the quintessential elements of an RPG unit while providing a dynamic platform for users to tailor characters to their unique gaming narratives. Its role as a foundational building block ensures the vitality and adaptability of the entire RPG Combat System Template.
+This dynamic and user-friendly approach to the BaseUnit class ensures that it aligns with the overarching goal of creating a flexible and customizable RPG combat system template.
 
 ## BaseSkill
-In the intricate tapestry of the RPG Combat System Template, the BaseSkill class emerges as a pivotal component, providing units with the means to engage in a myriad of actions—ranging from powerful attacks to strategic support. The essence of any skill is encapsulated within the BaseSkill class, encompassing essential attributes such as a name, required MP, power, skill type, and the potential application of buffs or debuffs. This foundational class serves as a canvas upon which developers can paint a diverse array of skill functionalities, tailored to the unique dynamics of their RPG worlds.
+The BaseSkill class serves as a important component within the RPG system, providing units with the ability to attack and interact with others. It contains essential attributes such as a name, the MP needed for the attack, power, and skill type. Additionally, it can include an elemental attribute and buffs/debuffs that it applies when used, if need be.
 
-At the heart of the BaseSkill class lies the Use function—a linchpin that determines the skill's behavior when activated. This function takes a user and a target as parameters, offering unparalleled freedom for developers to define the specific actions a skill should undertake. The beauty of the BaseSkill class lies in its adaptability; developers can unleash their creativity, crafting skills that exhibit versatility and uniqueness. Whether it's a healing skill, an offensive onslaught, or a game-specific maneuver, the Use function acts as a gateway to a multitude of possibilities.
+The primary function of note is the Use function, where, after receiving a user and a target, the skill executes its defined action. The true power of the BaseSkill class lies in its versatility, allowing developers the freedom to define various actions when inherited. This flexibility enables the creation of skills that can dynamically adapt to different scenarios, such as a healing skill that, when used on an enemy, deals damage, or an attacking skill that summons a mech to attack for you.
 
-**Example: Healing Skill**
+Here's an example of a healing skill's Use function:
 
 ```c++
 void bee::rpg::HealSkill::Use(const std::shared_ptr<BaseUnit>& user, const std::shared_ptr<BaseUnit>& target)
@@ -150,7 +136,7 @@ void bee::rpg::HealSkill::Use(const std::shared_ptr<BaseUnit>& user, const std::
 }
 ```
 
-**Example: Chained Echoes Buff/Debuff Skill**
+Moreover, the template allows for the creation of game-specific skills, as demonstrated in the following example of a Chained Echoes Buff/Debuff skill:
 
 ```c++
 void bee::rpg::CEBuffOrDebuffSkill::Use(const std::shared_ptr<BaseUnit>& user, const std::shared_ptr<BaseUnit>& target)
@@ -182,13 +168,11 @@ void bee::rpg::CEBuffOrDebuffSkill::Use(const std::shared_ptr<BaseUnit>& user, c
 }
 ```
 
-These examples illustrate the versatility and freedom granted by the BaseSkill class, allowing developers to craft intricate and diverse skill functionalities within the RPG Combat System Template. From traditional healing to game-specific overdrive mechanics, the BaseSkill class empowers developers to shape the very essence of their RPG combat systems.
-
 ## Base Item, Inventory, and Equipment
 ### Base Item & Inherited Classes
-The intricacies of the RPG Combat System Template delve into the realm of items, offering a dynamic and diverse experience for players. The BaseItem class lays the foundation, providing units, especially players, with the ability to wield a plethora of items, each serving unique purposes. The simplicity of the BaseItem class, encapsulating only a name and quantity, conceals its true power—a versatility that shines through its inherited classes.
+The BaseItem class stands as a versatile foundation for items within the RPG system, giving units, mainly the player, the ability to choose from multiple items and utilize them in and out of battle. Whether it's consumable items used for attacks, healing, or buffs, or collectible items used for crafting, the BaseItem class covers the fundamental aspects that any item should have: a name and the item's quantity. But of course, its power lies in how diverse its inherited classes can be.
 
-One such example is the ConsumableItem, a subclass of BaseItem, representing items with the potential to alter battle dynamics through associated skills. This ingenious design allows for the creation of varied consumable items, each with its own unique effect, such as a Pokeball item:
+One such example is the ConsumableItem, which contains a skill allowing it to be used in battle with that skill's effect. This approach allows for different consumable item effects, such as creating a Pokeball item:
 
 ```c++
 bee::rpg::Pokeball::Pokeball(std::string name, const int amount, int ballValue): ConsumableItem(std::move(name), amount)
@@ -201,7 +185,9 @@ bee::rpg::Pokeball::Pokeball(std::string name, const int amount, int ballValue):
 ```
 
 ### Inventory
-The Inventory system becomes the custodian of these diverse items, managing their presence, quantity, and interactions. Through the AddItem and GetItem functions, the inventory gracefully handles item addition and retrieval, ensuring seamless integration with the RPG Combat System Template. A key feature is the ability to differentiate between types of items, allowing users to define what items can be used in battle, adding depth to the gaming experience.
+Managing items can be done easily through the use of an inventory. The inventory is designed to handle any BaseItem or inherited item while managing cleanup when an item gets used. For instance, if an item is used, the inventory erases the item if there are none left and returns the skill that the item contains, if any. The AddItem and GetItem functions mirror their counterparts in the Unit class for consistency, since they do similar things.
+
+Snippet of the Inventory header:
 
 ```c++
 template <typename T, std::enable_if_t<std::is_base_of_v<BaseItem, T>, bool>  = true>
@@ -216,7 +202,7 @@ T* GetItem(size_t index)
     // ... (Get item logic)
 }
 ```
-For instance, a Pokemon Bag class exemplifies this flexibility by determining which items are consumable for use in battles:
+The GetConsumableItems function in the Pokemon Bag example demonstrates an exception to getting all items, providing flexibility in defining consumable items:
 
 ```c++
 std::vector<size_t> bee::rpg::PokemonBag::GetIndicesOfConsumableItems() const
@@ -236,7 +222,7 @@ std::vector<size_t> bee::rpg::PokemonBag::GetIndicesOfConsumableItems() const
 }
 ```
 ### Equipment
-Taking the concept of BaseItem to new heights, the BaseEquipment class introduces the concept of equipment that not only occupies an inventory slot but also imparts changes to a unit's stats when equipped. The EquipmentManager orchestrates the equipped items, providing a dynamic layer to the combat system. This newfound complexity allows developers to explore innovative mechanics such as familiarity or unique buffs tied to specific equipment.
+The BaseEquipment class expands upon the concept of the BaseItem, introducing the ability to change stats when equipped. The addition of the StatChange struct enhances the item class, allowing developers to define what stats change and by how much when equipping the equipment. The EquipmentManager class further elevates the combat system by keeping track of currently equipped equipment on a user.
 
 ```c++
 class BaseEquipment : public BaseItem
@@ -268,31 +254,28 @@ private:
 };
 ```
 
-In this way, the RPG Combat System Template extends its reach into the realm of items and equipment, offering a canvas for developers to paint vibrant and varied gameplay experiences. From consumables that alter the tide of battle to equipment that fundamentally changes a unit's capabilities, the template provides the foundation for a rich and immersive RPG world.
+This design opens avenues for additional layers of depth in the combat system, allowing developers to create unique equipment features, such as providing buffs at the start of fights, or implementing familiarity mechanics. The GetWeaponStatModifier function in EquipmentManager exemplifies how the equipment can be leveraged to modify specific stats.
 
 ## Future Directions
-As the RPG Combat System Template continues to evolve, several exciting avenues open up for further enhancements and refinements. Here are some promising directions for future development:
+While the current RPG Combat System Template lays a solid foundation, there are several avenues for improvement and expansion in the future:
 
-1. Advanced AI Behaviors
+1. Advanced AI Behaviors:
+Enhancing the AI's decision-making process is a main priority at the moment. The current template relies on random skill and target selection, but incorporating more sophisticated AI behaviors, such as Utility AI, can elevate the enemies' challenge level and introduce dynamic decision-making.
 
-Elevate the template's enemy AI by exploring advanced behaviors. Consider integrating Utility AI to enable more sophisticated decision-making, making enemy encounters more challenging and dynamic. This could involve creating AI routines that adapt to player strategies, adding an extra layer of strategic depth to battles.
+2. Character Progression System:
+This would involve the implementation of customizable skill trees, character classes, and a robust level-up system. This would ais to add depth and personalization to the player's journey.
 
-2. Character Progression System
+3. Quest and Story Incorporation:
+Expanding the template to integrate with a broader RPG framework, including incorporating quest triggers based on battle outcomes, enabling character interactions mid-battle, etc...
 
-Dive into the realm of character progression by introducing a comprehensive system. This could include customizable skill trees, character classes, and a robust leveling system. By providing players with meaningful choices in character development, you enhance the depth of the RPG experience and allow for diverse character builds.
+4. Enhanced Accessibility:
+Making the template more user-friendly for individuals beyond programmers is a key consideration. Exploring ways to provide a more intuitive interface or incorporating visual tools would increase access to the template, allowing a broader audience to use the template.
 
-3. Quest and Story Incorporation
+5. Visual and Audio Enhancements:
+Future iterations could focus on visual and audio enhancements, introducing animations, special effects, and soundtracks to create a more immersive and captivating atmosphere during battles.
 
-Broaden the template's scope by integrating quest and story elements. Explore the possibilities of quest triggers based on battle outcomes, character interactions mid-battle, or dynamic events that unfold during combat. This addition can transform battles into narrative-driven experiences, tying them seamlessly into the overarching RPG framework.
-
-4. User-Friendly Adaptability
-
-Enhance accessibility by making the template more user-friendly, catering to individuals beyond the programming sphere. Consider developing user interfaces or visual tools that empower non-programmers to customize and tweak aspects of the combat system. This democratization of customization could open the template to a broader audience.
-
-5. Visual and Audio Enhancements
-
-Elevate the overall gaming experience by focusing on visual and audio enhancements. Integrate animations, special effects, and soundtracks to create a more immersive atmosphere during battles. A visually and acoustically engaging experience can significantly enhance player immersion and emotional engagement.
-These future directions not only expand the template's functionality but also cater to a wider audience, making it a versatile tool for both developers and non-programmers alike. By delving into these areas, the RPG Combat System Template has the potential to become a robust framework for creating captivating and personalized RPG experiences.
+These future directions aim to not only refine the existing template but also broaden its appeal to a wider audience, fostering creativity and innovation in the realm of RPG game development.
 
 ## Conclusion
-Summarize the key points discussed in your blog post. Reiterate the unique aspects of your RPG combat system template and how each component contributes to a dynamic and engaging gaming experience.
+
+In conclusion, the RPG Combat System Template embodies my passion for the RPG genre and my commitment to providing a valuable resource for game developers. By combining turn-based mechanics with dynamic customization, the template empowers creators to shape their own RPG worlds. The journey from dynamic Custom Enum Types to the core components of BaseUnit and BaseSkill underscores the template's adaptability and effectiveness. As the template evolves, it will embrace advanced AI behaviors, implement a comprehensive character progression system, weave intricate narratives, enhance accessibility, and elevate the gaming experience through visual and audio enhancements. This template can be used as a tool ot not only build a Turn-Based RPG battle system, but to also provide a means to for others to propel their ideas off of and expands upon them.
