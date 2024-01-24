@@ -4,8 +4,11 @@ title: "RPG system Blog Post"
 ---
 
 # RPG System Blog Post
-Introduction
-Start with a brief introduction to set the stage for your RPG combat system template. Mention the goals you aimed to achieve and the inspiration behind creating it.
+
+## Introductiom
+As an avid enthusiast of the RPG genre, my passion has been ignited by titles like Xenoblade Chronicles, Dragon Quest 11, Chained Echoes, Bravely Default, and Sea of Stars. The allure of immersive worlds, captivating stories, and strategic turn-based combat has always fascinated me. So, it was only a matter of time before the urge to create something within this realm took over.
+
+In this journey, I embarked on the ambitious task of crafting a customizable turn-based RPG battle system template—a foundation upon which others could build their own epic adventures. Over the course of the next six weeks, I delved into the intricate details, fueled by a desire to encapsulate the essence of what makes RPGs so enthralling. Join me on this creative odyssey as I unveil the intricacies of the system, from its inception to the intricacies of its core components.
 
 ## RPG Combat System Template
 ### Overview
