@@ -184,12 +184,91 @@ void bee::rpg::CEBuffOrDebuffSkill::Use(const std::shared_ptr<BaseUnit>& user, c
 
 These examples illustrate the versatility and freedom granted by the BaseSkill class, allowing developers to craft intricate and diverse skill functionalities within the RPG Combat System Template. From traditional healing to game-specific overdrive mechanics, the BaseSkill class empowers developers to shape the very essence of their RPG combat systems.
 
-## Base Item, Inventory, and Base Equipment
-Interconnected Components
-Explain how these three components—Base Item, Inventory, and Base Equipment—are interconnected. Discuss how they collectively manage in-game items, character inventories, and equipment.
+## Base Item, Inventory, and Equipment
+### Base Item & Inherited Classes
+The intricacies of the RPG Combat System Template delve into the realm of items, offering a dynamic and diverse experience for players. The BaseItem class lays the foundation, providing units, especially players, with the ability to wield a plethora of items, each serving unique purposes. The simplicity of the BaseItem class, encapsulating only a name and quantity, conceals its true power—a versatility that shines through its inherited classes.
 
-Item Customization
-Highlight any customization options you've incorporated into the items, inventory, and equipment system. This could include different types of items, rarity levels, and equipment slots.
+One such example is the ConsumableItem, a subclass of BaseItem, representing items with the potential to alter battle dynamics through associated skills. This ingenious design allows for the creation of varied consumable items, each with its own unique effect, such as a Pokeball item:
+
+```c++
+bee::rpg::Pokeball::Pokeball(std::string name, const int amount, int ballValue): ConsumableItem(std::move(name), amount)
+{
+    CustomEnumTypes itemEnumTypes = bee::Engine.ECS().GetSystem<PokemonBattleSystem>().GetCustomTypes("itemType");
+    ItemTypeId = itemEnumTypes.GetId("PokeBall");
+
+    ItemSkill = new PokeballSkill(ballValue);
+}
+```
+
+### Inventory
+The Inventory system becomes the custodian of these diverse items, managing their presence, quantity, and interactions. Through the AddItem and GetItem functions, the inventory gracefully handles item addition and retrieval, ensuring seamless integration with the RPG Combat System Template. A key feature is the ability to differentiate between types of items, allowing users to define what items can be used in battle, adding depth to the gaming experience.
+
+```c++
+template <typename T, std::enable_if_t<std::is_base_of_v<BaseItem, T>, bool>  = true>
+void AddItem(const T& newItem)
+{
+    // ... (Add item logic)
+}
+
+template <typename T, std::enable_if_t<std::is_base_of_v<BaseItem, T>, bool>  = true>
+T* GetItem(size_t index)
+{
+    // ... (Get item logic)
+}
+```
+For instance, a Pokemon Bag class exemplifies this flexibility by determining which items are consumable for use in battles:
+
+```c++
+std::vector<size_t> bee::rpg::PokemonBag::GetIndicesOfConsumableItems() const
+{
+    CustomEnumTypes itemTypes = Engine.ECS().GetSystem<PokemonBattleSystem>().GetCustomTypes("itemType");
+    std::vector<size_t> indices;
+    size_t index = 0;
+    for (const auto& item : m_Items) {
+        if (item->ItemTypeId == itemTypes.GetId("Consumable") ||
+            item->ItemTypeId == itemTypes.GetId("PokeBall"))
+        {
+            indices.push_back(index);
+        }
+        ++index;
+    }
+    return indices;
+}
+```
+### Equipment
+Taking the concept of BaseItem to new heights, the BaseEquipment class introduces the concept of equipment that not only occupies an inventory slot but also imparts changes to a unit's stats when equipped. The EquipmentManager orchestrates the equipped items, providing a dynamic layer to the combat system. This newfound complexity allows developers to explore innovative mechanics such as familiarity or unique buffs tied to specific equipment.
+
+```c++
+class BaseEquipment : public BaseItem
+{
+public:
+    BaseEquipment(const std::string& itemName, const int itemQuantity, const std::vector<StatChange>& statType);
+
+    std::vector<StatChange> GetStatChanges();
+
+private:
+    std::vector<StatChange> StatTypeChanges;
+};
+
+class EquipmentManager
+{
+public:
+    std::vector<std::shared_ptr<BaseEquipment>> Equipments;
+
+    void AddEquipment(const std::shared_ptr<BaseEquipment>& equipmentToBeAdded);
+    
+    void RemoveEquipment(size_t position);
+    void RemoveEquipment(const std::shared_ptr<BaseEquipment>& equipmentToBeRemoved);
+
+    std::shared_ptr<bee::rpg::BaseEquipment> GetEquipment(size_t position);
+
+    [[nodiscard]] int GetWeaponStatModifier(int statId) const;
+private:
+    std::unordered_map<int, float> m_WeaponModifier;
+};
+```
+
+In this way, the RPG Combat System Template extends its reach into the realm of items and equipment, offering a canvas for developers to paint vibrant and varied gameplay experiences. From consumables that alter the tide of battle to equipment that fundamentally changes a unit's capabilities, the template provides the foundation for a rich and immersive RPG world.
 
 ## Conclusion
 Summarize the key points discussed in your blog post. Reiterate the unique aspects of your RPG combat system template and how each component contributes to a dynamic and engaging gaming experience.
