@@ -32,7 +32,7 @@ The journey towards a customizable RPG combat system wouldn't be complete withou
 ### Implementation
 The crux of this innovation lies in the creation of a versatile CustomEnumTypes class. Here's a glimpse into how it is implemented within the RPG Combat System Template:
 
-```C++
+```c++
 rpg::CustomEnumTypes statTypes;
 
 statTypes.Create("CurrentHp");
