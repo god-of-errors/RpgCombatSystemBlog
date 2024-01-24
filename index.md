@@ -105,7 +105,7 @@ This dynamic and user-friendly approach to the BaseUnit class ensures that it al
 ## BaseSkill
 The BaseSkill class serves as a important component within the RPG system, providing units with the ability to attack and interact with others. It contains essential attributes such as a name, the MP needed for the attack, power, and skill type. Additionally, it can include an elemental attribute and buffs/debuffs that it applies when used, if need be.
 
-The primary function of note is the Use function, where, after receiving a user and a target, the skill executes its defined action. The true power of the BaseSkill class lies in its versatility, allowing developers the freedom to define various actions when inherited. This flexibility enables the creation of skills that can dynamically adapt to different scenarios, such as a healing skill that, when used on an enemy, deals damage, or an attacking skill that summons a mech to attack for you.
+The primary function of note is the Use function, where, after receiving a user and a target, the skill executes its defined action. The true power of the BaseSkill class lies in its versatility, allowing developers the freedom to define various actions when inherited. This flexibility enables the creation of skills that can dynamically adapt to different scenarios, such as a healing skill that, when used on an undead enemy, deals damage, or an attacking skill that summons a mech to attack for you.
 
 Here's an example of a healing skill's Use function:
 
@@ -136,7 +136,7 @@ void bee::rpg::HealSkill::Use(const std::shared_ptr<BaseUnit>& user, const std::
 }
 ```
 
-Moreover, the template allows for the creation of game-specific skills, as demonstrated in the following example of a Chained Echoes Buff/Debuff skill:
+Moreover, the template allows for the creation of game-specific skills, for example, Chained Echoes contains a game specific thign with it's overdrive mechanic. This updates everytime a skill is used and depending on what stage it's on, the MP consume more or else magic point (in that game it's called TP tho). This is demonstrated in the following example of a Chained Echoes Buff/Debuff skill:
 
 ```c++
 void bee::rpg::CEBuffOrDebuffSkill::Use(const std::shared_ptr<BaseUnit>& user, const std::shared_ptr<BaseUnit>& target)
@@ -147,6 +147,7 @@ void bee::rpg::CEBuffOrDebuffSkill::Use(const std::shared_ptr<BaseUnit>& user, c
     bee::Engine.ECS().GetSystem<ChainedEchoesBattleSystem>().UpdateOverdrive(GetSkillType());
 
     // Consume MP based on game-specific rules
+    const auto [OverdriveStage, ConsumeMp, TakeDamage, DealDamage] = bee::Engine.ECS().GetSystem<ChainedEchoesBattleSystem>().GetOverdriveInfo();
     const int totalMpCost = static_cast<int>(-(static_cast<float>(MpCost) * ConsumeMp));
     user->ChangeBaseStat(statEnumTypes.GetId("CurrentMp"), totalMpCost);
 
@@ -263,7 +264,7 @@ While the current RPG Combat System Template lays a solid foundation, there are 
 Enhancing the AI's decision-making process is a main priority at the moment. The current template relies on random skill and target selection, but incorporating more sophisticated AI behaviors, such as Utility AI, can elevate the enemies' challenge level and introduce dynamic decision-making.
 
 2. Character Progression System:
-This would involve the implementation of customizable skill trees, character classes, and a robust level-up system. This would ais to add depth and personalization to the player's journey.
+This would involve the implementation of customizable skill trees, character classes, and a robust level-up system. This would help add depth and personalization to the player's journey.
 
 3. Quest and Story Incorporation:
 Expanding the template to integrate with a broader RPG framework, including incorporating quest triggers based on battle outcomes, enabling character interactions mid-battle, etc...
