@@ -117,11 +117,72 @@ These functions not only facilitate the addition of skills to a unit but also en
 In essence, the BaseUnit class encapsulates the quintessential elements of an RPG unit while providing a dynamic platform for users to tailor characters to their unique gaming narratives. Its role as a foundational building block ensures the vitality and adaptability of the entire RPG Combat System Template.
 
 ## BaseSkill
-Functionality
-Explain the purpose of the BaseSkill class and how it handles various character abilities and actions during combat. Highlight any unique features that set your system apart.
+In the intricate tapestry of the RPG Combat System Template, the BaseSkill class emerges as a pivotal component, providing units with the means to engage in a myriad of actions—ranging from powerful attacks to strategic support. The essence of any skill is encapsulated within the BaseSkill class, encompassing essential attributes such as a name, required MP, power, skill type, and the potential application of buffs or debuffs. This foundational class serves as a canvas upon which developers can paint a diverse array of skill functionalities, tailored to the unique dynamics of their RPG worlds.
 
-Implementation Example
-Provide an example or two to showcase how BaseSkill can be implemented within your RPG combat system. Illustrate how it interacts with BaseUnit and impacts the gameplay.
+At the heart of the BaseSkill class lies the Use function—a linchpin that determines the skill's behavior when activated. This function takes a user and a target as parameters, offering unparalleled freedom for developers to define the specific actions a skill should undertake. The beauty of the BaseSkill class lies in its adaptability; developers can unleash their creativity, crafting skills that exhibit versatility and uniqueness. Whether it's a healing skill, an offensive onslaught, or a game-specific maneuver, the Use function acts as a gateway to a multitude of possibilities.
+
+**Example: Healing Skill**
+
+```c++
+void bee::rpg::HealSkill::Use(const std::shared_ptr<BaseUnit>& user, const std::shared_ptr<BaseUnit>& target)
+{
+    // ... (Initialization and setup)
+
+    // Heal HP
+    if (HealType == HealTypes::Hp || HealType == HealTypes::Both) {
+        amount = IsPercentage ? Power * (target->GetModifiedStat(statEnumTypes.GetId("CurrentHp"))) : Power;
+        target->ChangeBaseStat(statEnumTypes.GetId("CurrentHp"), amount);
+        std::cout << "Healed " << target->Name << " for " << amount << " HP." << '\n';
+    }
+
+    // Heal MP
+    if (HealType == HealTypes::Mp || HealType == HealTypes::Both) {
+        amount = IsPercentage ? Power * (target->GetModifiedStat(statEnumTypes.GetId("CurrentMp"))) : Power;
+        target->ChangeBaseStat(statEnumTypes.GetId("CurrentMp"), amount);
+        std::cout << "Healed " << target->Name << " for " << amount << " MP." << '\n';
+    }
+
+    // Apply Buffs/Debuffs
+    for (const auto& buffOrDebuff : BuffOrDebuffListToBeApplied)
+    {
+        target->ApplyBuff(buffOrDebuff);
+    }
+}
+```
+
+**Example: Chained Echoes Buff/Debuff Skill**
+
+```c++
+void bee::rpg::CEBuffOrDebuffSkill::Use(const std::shared_ptr<BaseUnit>& user, const std::shared_ptr<BaseUnit>& target)
+{
+    // ... (Initialization and setup)
+
+    // Update game-specific Overdrive mechanic
+    bee::Engine.ECS().GetSystem<ChainedEchoesBattleSystem>().UpdateOverdrive(GetSkillType());
+
+    // Consume MP based on game-specific rules
+    const int totalMpCost = static_cast<int>(-(static_cast<float>(MpCost) * ConsumeMp));
+    user->ChangeBaseStat(statEnumTypes.GetId("CurrentMp"), totalMpCost);
+
+    // Apply Buffs/Debuffs based on game-specific conditions
+    if (SelfOnly)
+    {
+        for (const auto& buffOrDebuff : BuffOrDebuffListToBeApplied)
+        {
+            user->ApplyBuff(buffOrDebuff);
+        }
+    }
+    else
+    {
+        for (const auto& buffOrDebuff : BuffOrDebuffListToBeApplied)
+        {
+            target->ApplyBuff(buffOrDebuff);
+        }
+    }
+}
+```
+
+These examples illustrate the versatility and freedom granted by the BaseSkill class, allowing developers to craft intricate and diverse skill functionalities within the RPG Combat System Template. From traditional healing to game-specific overdrive mechanics, the BaseSkill class empowers developers to shape the very essence of their RPG combat systems.
 
 ## Base Item, Inventory, and Base Equipment
 Interconnected Components
