@@ -12,6 +12,16 @@ In this journey, I embarked on the ambitious task of crafting a customizable tur
 
 ## RPG Combat System Template
 ### Overview
+The RPG Combat System Template I built is designed to function seamlessly as part of an Entity Component System (ECS). It serves as the bedrock for turn-based mechanics, defining critical elements such as the turn order based on a unit's speed and the logic for choosing the order of units in battle. Central to its functionality is the ability to set battle data, crucial for initiating encounters with units on both sides. After all, a battle system is only as robust as the adversaries it pits against each other.
+
+Originally, the template relied on ImGui UI dependency, but I later undertook the task of decoupling it to ensure adaptability to any UI framework. This strategic separation allows the project to evolve dynamically, triggered only when one of the six essential functions is called upon:
+
+1. StartBattle: Initiates the battle.
+2. PlayerTurn: Enables the player to decide their actions, choosing between skills or items.
+3. EnemyTurn: Mirrors the player's turn but for enemies, allowing them to make decisions.
+4. WinBattle/LoseBattle: Left virtual to accommodate specific actions triggered upon victory or defeat, such as prompts for leveling up or game over screens.
+5. Reset: Straightforwardly resets the template, preparing it for another engaging battle.
+
 Provide a high-level overview of your RPG combat system template. Explain its main features and how it enhances the gaming experience.
 
 ### Custom Enum Types
