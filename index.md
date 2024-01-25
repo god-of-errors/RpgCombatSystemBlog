@@ -5,7 +5,7 @@ title: "RPG Battle System Blog Post"
 
 # The Making of a Turn-based RPG Battle System Template
 
-## Introductiom
+## Introduction
 As a huge fan of the RPG genre, from the expansive worlds of Xenoblade Chronicles and Dragon Quest 11 to the captivating narratives of Chained Echoes and Sea of Stars, my love for RPG games has always been paramount. Naturally, this deep passion created in me a profound itch to actively contribute to a genre that has consistently sparked my imagination.
 
 Driven by this aspiration, I went ahead tried to develop a customizable turn-based RPG battle system template. This endeavor was not only a pursuit of my personal creative ambitions but a way to create a robust framework for ther fans and developers to work on their own visions. The ensuing six weeks were dedicated to the making and refinement of this turn-based RPG battle system template.
@@ -324,4 +324,4 @@ These future directions aim to not only refine the existing template but also br
 
 In conclusion, the RPG Combat System Template reflects my dedication to the RPG genre and my commitment to offering a valuable tool for game developers. Through the amalgamation of turn-based mechanics and dynamic customization, the template enables creators to craft their own RPG worlds. The progression from dynamic Custom Enum Types to the foundational components of BaseUnit and BaseSkill highlights the template's versatility and efficacy. Looking forward, the template will evolve to incorporate advanced AI behaviors, implement a comprehensive character progression system, integrate intricate narratives, enhance accessibility, and elevate the gaming experience with visual and audio enhancements. This template serves as a robust tool not only for constructing a Turn-Based RPG battle system but also as a platform for others to generate, refine, and build their creative ideas upon.
 
-<img src="Logo BUas_RGB.jpg" alt="BUAS Logo" width="800" height="400">
+<img src="Logo BUas_RGB.jpg" alt="BUAS Logo" width="1500" height="400">
