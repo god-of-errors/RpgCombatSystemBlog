@@ -3,7 +3,7 @@ layout: default
 title: "RPG Battle System Blog Post"
 ---
 
-# The Making of a Turn-based RPG Battle System Template
+# Crafting a Turn-Based RPG Battle System Template
 
 ## Introduction
 As a huge fan of the RPG genre, from the expansive worlds of Xenoblade Chronicles and Dragon Quest 11 to the captivating narratives of Chained Echoes and Sea of Stars, my love for RPG games has always been paramount. Naturally, this deep passion created in me a profound itch to actively contribute to a genre that has consistently sparked my imagination.
