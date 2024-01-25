@@ -16,7 +16,7 @@ The RPG battle system template, I developed is designed to integrate into an ECS
 
 The template is adaptable and allows users to define battle data, ensuring the presence of units on both sides, which is an indispensable pre-requisite for any functional battle system, after all, a battle system comes to life only when at both sides are present. Although it was initially built with ImGui UI dependency, the template has been separated form it to ensure adaptability to any UI provided.
 
-The progression within the battle system is triggered by calling one of the six essential functions:
+The progression within the battle system is triggered by calling one of the five essential functions:
 
 1. **Start Battle**: Initiates the battle and sets the stage for the upcoming fight.
 2. **Player Turn**: Allows the user to choose what the current Unit will do, whether it be using a skill or utilizing an item.
