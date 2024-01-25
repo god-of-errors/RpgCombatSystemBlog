@@ -324,4 +324,4 @@ These future directions aim to not only refine the existing template but also br
 
 In conclusion, the RPG Combat System Template reflects my dedication to the RPG genre and my commitment to offering a valuable tool for game developers. Through the amalgamation of turn-based mechanics and dynamic customization, the template enables creators to craft their own RPG worlds. The progression from dynamic Custom Enum Types to the foundational components of BaseUnit and BaseSkill highlights the template's versatility and efficacy. Looking forward, the template will evolve to incorporate advanced AI behaviors, implement a comprehensive character progression system, integrate intricate narratives, enhance accessibility, and elevate the gaming experience with visual and audio enhancements. This template serves as a robust tool not only for constructing a Turn-Based RPG battle system but also as a platform for others to generate, refine, and build their creative ideas upon.
 
-<img src="Logo BUas_RGB.jpg" alt="BUAS Logo" width="1500" height="400">
+<img src="Logo BUas_RGB.jpg" alt="BUAS Logo" width="1400" height="400">
